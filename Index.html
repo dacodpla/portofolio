@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dylan A.C. - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&family=Fustat:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        /* Universal Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Frank Ruhl Libre", serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Main Container */
+        main {
+            margin: auto;
+            padding: 2rem 1rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            max-width: 65%;
+            z-index: 1;
+        }
+
+        /* Logo */
+        .logo {
+            width: 125px;
+            margin-bottom: 175px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.2s forwards;
+        }
+
+        /* Title Section with Interactive Words */
+        .title {
+            font-family: "Frank Ruhl Libre", serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #000;
+            text-align: left;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        .title-word {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .title-word::after {
+            content: "";
+            position: absolute;
+            height: 5px;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            background: linear-gradient(90deg, #bb1a1a, #932a7f);
+            transition: width 0.5s ease;
+        }
+
+        .title-word.highlight::after {
+            width: 100%;
+        }
+
+        /* New styles for opacity control */
+        .title-word.dimmed {
+            opacity: 0.3;
+        }
+
+        .title-word.highlight {
+            opacity: 1;
+        }
+
+        /* Default state - all words visible */
+        .title-word {
+            opacity: 1;
+        }
+
+        /* Description Section */
+        .desc {
+            font-size: 20px;
+            background: linear-gradient(180deg, #bb1a1a, #932a7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: "Fustat", sans-serif;
+            font-weight: 700;
+            text-align: justify;
+            line-height: 1.8;
+            opacity: 0;
+            margin-bottom: 2rem;
+            max-width: 63%;
+            animation: fadeInUp 1s ease 0.6s forwards;
+        }
+
+        /* Skills List */
+        .list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 4rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .skill-item {
+            width: 100%;
+            opacity: 0;
+            animation: fadeInLeft 1s ease forwards;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-item:nth-child(1) { animation-delay: 0.8s; }
+        .skill-item:nth-child(2) { animation-delay: 1s; }
+        .skill-item:nth-child(3) { animation-delay: 1.2s; }
+        .skill-item:nth-child(4) { animation-delay: 1.4s; }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .skill-link {
+            font-family: "Frank Ruhl Libre", serif;
+            font-size: 77px;
+            font-weight: 700;
+            color: #000;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .skill-link::after {
+            content: "";
+            position: absolute;
+            height: 5px;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            background: #000;
+            transition: width 1s ease;
+        }
+
+        .skill-header:hover .skill-link::after {
+            width: 100%;
+        }
+
+        /* Fixed Expansion Animation */
+        .skill-content {
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            background-color: #000;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+
+        .skill-content-inner {
+            padding: 2rem;
+            max-width: 65%;
+            margin: 0 auto;
+            transition: all 0.3s ease 0.2s;
+        }
+
+        .skill-item.expanded .skill-content {
+            max-height: 2000px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-item.expanding .skill-content {
+            transition-delay: 0s;
+        }
+
+        .skill-item.collapsing .skill-content {
+            transition-delay: 0s;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .skill-item.collapsing .skill-content-inner {
+            transition-delay: 0s;
+            transform: translateY(-10px);
+        }
+
+        /* Text color changes for expanded state */
+        .skill-item.expanded .skill-link {
+            color: #000;
+            position: relative;
+            z-index: 3;
+        }
+
+        .skill-description {
+            font-family: "Fustat", sans-serif;
+            font-size: 18px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 80%;
+            transition: color 0.3s ease;
+        }
+
+        .skill-item.expanded .skill-description {
+            color: #fff;
+        }
+
+        .projects-list {
+            list-style: none;
+            margin-left: 2rem;
+        }
+
+        .project-item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .project-title {
+            font-family: "Frank Ruhl Libre", serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .skill-item.expanded .project-title {
+            color: #fff;
+        }
+
+        .project-description {
+            font-family: "Fustat", sans-serif;
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .skill-item.expanded .project-description {
+            color: #ccc;
+        }
+
+        .project-tech {
+            font-family: "Fustat", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #bb1a1a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-item.expanded .project-tech {
+            color: #bb1a1a;
+        }
+
+        /* About Section - Same improvements */
+        .about-section {
+            width: 100%;
+            margin-bottom: 4rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 4rem;
+        }
+
+        .about-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .about-title {
+            font-family: "Frank Ruhl Libre", serif;
+            font-size: 77px;
+            font-weight: 700;
+            color: #000;
+            position: relative;
+        }
+
+        .about-title::after {
+            content: "";
+            position: absolute;
+            height: 5px;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            background: #000;
+            transition: width 1s ease;
+        }
+
+        .about-header:hover .about-title::after {
+            width: 100%;
+        }
+
+        .about-content {
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            background-color: #000;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+
+        .about-content-inner {
+            padding: 2rem;
+            max-width: 65%;
+            margin: 0 auto;
+            transition: all 0.3s ease 0.2s;
+        }
+
+        .about-section.expanded .about-content {
+            max-height: 2000px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-section.collapsing .about-content {
+            transition-delay: 0s;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .about-section.collapsing .about-content-inner {
+            transition-delay: 0s;
+            transform: translateY(-10px);
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 80%;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .about-section.expanded .about-text {
+            color: #fff;
+        }
+
+        .skills-text {
+            font-family: "Fustat", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, #bb1a1a, #932a7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .skills-list-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #666;
+            margin-left: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .about-section.expanded .skills-list-text {
+            color: #ccc;
+        }
+
+        /* Contact Section */
+        .contact {
+            font-family: "Fustat", sans-serif;
+            font-weight: 700;
+            margin-bottom: 5rem;
+            text-align: left;
+        }
+
+        .contact-title {
+            font-size: 48px;
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        .contact-info {
+            font-size: 24px;
+            opacity: 0.5;
+            margin-bottom: 3rem;
+        }
+
+        .contact-logo {
+            width: 125px;
+            opacity: 0.5;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                max-width: 90%;
+            }
+
+            .skill-content-inner,
+            .about-content-inner {
+                max-width: 90%;
+                padding: 2rem 1rem;
+            }
+
+            .title, .about-title {
+                font-size: 48px;
+            }
+
+            .desc {
+                font-size: 16px;
+                max-width: 100%;
+            }
+
+            .skill-link {
+                font-size: 50px;
+            }
+
+            .skill-description, .about-text {
+                max-width: 100%;
+            }
+
+            .projects-list, .skills-list-text {
+                margin-left: 0;
+            }
+
+            .logo {
+                margin-bottom: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title, .about-title {
+                font-size: 32px;
+            }
+
+            .desc {
+                font-size: 14px;
+            }
+
+            .skill-link {
+                font-size: 40px;
+            }
+
+            .project-title {
+                font-size: 24px;
+            }
+
+            .contact-title {
+                font-size: 32px;
+            }
+
+            .contact-info {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <!-- Hero Section -->
+        <div class="logo"><img src="LOGO.png" alt="\\\\/" width="125px"></div>
+        
+        <div class="title">
+            <p><span class="title-word" data-word="I">I</span> <span class="title-word" data-word="design">design</span> <span class="title-word" data-word="interfaces">interfaces</span><span class="title-word" data-word="comma">,</span> <span class="title-word" data-word="games">games</span><span class="title-word" data-word="comma2">,</span> <span class="title-word" data-word="graphics">graphics</span><span class="title-word" data-word="comma3">,</span> <span class="title-word" data-word="and">and</span></p>
+            <p><span class="title-word" data-word="edit">edit</span> <span class="title-word" data-word="videos">videos</span><span class="title-word" data-word="period">.</span></p>
+        </div>
+
+        <div class="desc">
+            <p>
+                Hi, I'm Dylan. Although people say that a Jack-of-all-trades is worse
+                than a Master-of-one, I think the exact opposite. With a lot of
+                experience using programs associated with the skills I mentioned, I
+                bring some things to the table. And some. Other than the things I
+                mentioned above, I also excel with standard computer skills such as
+                documents and spreadsheets as well as English as my second language.
+                Oh yeah, by the way, I'm from Indonesia.
+            </p>
+            <br>
+            <p>As I said, here are some of the things I do:</p>
+        </div>
+
+        <!-- Expandable Skills List -->
+        <ul class="list">
+            <li class="skill-item" data-skill="webdesign" data-highlight="I,design,interfaces">
+                <div class="skill-header">
+                    <a href="#" class="skill-link">UI/UX Design</a>
+                </div>
+                <div class="skill-content">
+                    <div class="skill-content-inner">
+                        <div class="skill-description">
+                            I create modern, responsive websites that combine beautiful design with excellent user experience. From concept to deployment, I handle everything including UI/UX design, front-end development, and performance optimization.
+                        </div>
+                        <ul class="projects-list">
+                            <li class="project-item">
+                                <h3 class="project-title">Personal Portfolio Website</h3>
+                                <p class="project-description">A clean, minimalist portfolio showcasing my work with smooth animations and responsive design. Built with modern web standards and optimized for performance across all devices.</p>
+                                <div class="project-tech">HTML, CSS, JAVASCRIPT</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">E-Commerce Platform</h3>
+                                <p class="project-description">Full-featured online store with shopping cart functionality, payment integration, and admin dashboard. Focused on user experience and conversion optimization.</p>
+                                <div class="project-tech">REACT, NODE.JS, MONGODB</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Business Landing Page</h3>
+                                <p class="project-description">High-converting landing page for a local Indonesian business with SEO optimization and mobile-first design approach.</p>
+                                <div class="project-tech">WORDPRESS, CUSTOM THEME</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="skill-item" data-skill="gamedesign" data-highlight="I,design,games">
+                <div class="skill-header">
+                    <a href="#" class="skill-link">Game Design</a>
+                </div>
+                <div class="skill-content">
+                    <div class="skill-content-inner">
+                        <div class="skill-description">
+                            I design and develop engaging games from initial concept to final product. My approach combines creative storytelling, intuitive gameplay mechanics, and polished visual design to create memorable gaming experiences.
+                        </div>
+                        <ul class="projects-list">
+                            <li class="project-item">
+                                <h3 class="project-title">2D Adventure Platformer</h3>
+                                <p class="project-description">Retro-style platformer game with custom pixel art assets, original soundtrack, and challenging level design. Features include power-ups, collectibles, and boss battles.</p>
+                                <div class="project-tech">Unity, C#, Aseprite</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Puzzle Strategy Game</h3>
+                                <p class="project-description">Innovative puzzle game combining strategy elements with mind-bending mechanics. Designed for both casual and hardcore puzzle game enthusiasts.</p>
+                                <div class="project-tech">GameMaker Studio, GML</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="skill-item" data-skill="graphicdesign" data-highlight="I,design,graphics">
+                <div class="skill-header">
+                    <a href="#" class="skill-link">Graphic Design</a>
+                </div>
+                <div class="skill-content">
+                    <div class="skill-content-inner">
+                        <div class="skill-description">
+                            I create compelling visual identities and marketing materials that communicate effectively and leave lasting impressions. My work spans from brand identity to print design and digital illustrations.
+                        </div>
+                        <ul class="projects-list">
+                            <li class="project-item">
+                                <h3 class="project-title">Brand Identity Systems</h3>
+                                <p class="project-description">Complete brand identity packages including logo design, color palettes, typography, and brand guidelines for various clients across different industries.</p>
+                                <div class="project-tech">Adobe Illustrator, Photoshop</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Print Marketing Materials</h3>
+                                <p class="project-description">Design and production of flyers, posters, brochures, and business cards for local businesses and events, focusing on clear communication and visual impact.</p>
+                                <div class="project-tech">InDesign, Illustrator</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Digital Illustrations</h3>
+                                <p class="project-description">Custom digital artwork and illustrations for web applications, game assets, and promotional materials with various artistic styles.</p>
+                                <div class="project-tech">Photoshop, Procreate</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="skill-item" data-skill="videoediting" data-highlight="I,edit,videos">
+                <div class="skill-header">
+                    <a href="#" class="skill-link">Video Editing</a>
+                </div>
+                <div class="skill-content">
+                    <div class="skill-content-inner">
+                        <div class="skill-description">
+                            I craft compelling video content that tells stories and engages audiences. From promotional videos to documentaries, I handle all aspects of post-production including editing, color correction, and sound design.
+                        </div>
+                        <ul class="projects-list">
+                            <li class="project-item">
+                                <h3 class="project-title">Product Promotional Videos</h3>
+                                <p class="project-description">Dynamic promotional content featuring motion graphics, color correction, and professional audio mixing. Created for both digital marketing and broadcast use.</p>
+                                <div class="project-tech">Final Cut Pro, After Effects</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Documentary Short Films</h3>
+                                <p class="project-description">Compelling narrative storytelling through video editing, incorporating interviews, b-roll footage, and sound design to create engaging documentary content.</p>
+                                <div class="project-tech">Premiere Pro, Audition</div>
+                            </li>
+                            <li class="project-item">
+                                <h3 class="project-title">Social Media Content</h3>
+                                <p class="project-description">Short-form video content optimized for various social media platforms, including Instagram Reels, TikTok videos, and YouTube shorts.</p>
+                                <div class="project-tech">Final Cut Pro, Motion</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <!-- About Section -->
+        <div class="about-section" data-section="about">
+            <div class="about-header">
+                <h2 class="about-title">About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-content-inner">
+                    <div class="about-text">
+                        <p>I'm a multi-disciplinary creative professional based in Indonesia with a passion for bringing ideas to life through various digital mediums. My journey started with curiosity about how things work, which led me to explore web development, game design, graphic design, and video editing.</p>
+                        <br>
+                        <p>What sets me apart is my ability to see projects from multiple angles and apply cross-disciplinary knowledge to create unique solutions. Whether it's incorporating game design principles into web interfaces or using video editing techniques to enhance user experience, I bring a holistic approach to every project.</p>
+                    </div>
+                    <div class="skills-text">Technical Skills & Tools:</div>
+                    <div class="skills-list-text">
+                        Web Development: HTML, CSS, JavaScript, React, WordPress<br>
+                        Game Development: Unity, GameMaker Studio, C#<br>
+                        Graphic Design: Adobe Creative Suite, Figma, Sketch<br>
+                        Video Editing: Final Cut Pro, Premiere Pro, After Effects<br>
+                        3D & Animation: Blender, Cinema 4D<br>
+                        Languages: Indonesian (Native), English (Fluent)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact">
+            <div class="contact-title">Good Enough?<br>Contact Me.</div>
+            <div class="contact-info">
+                dacoaw@gmail.com<br>
+                @cadoisa
+            </div>
+            <div class="contact-logo"><img src="LOGO.png" alt="\\\\/" width="125px"></div>
+        </div>
+    </main>
+
+    <script>
+        // Function to clear all title highlights and reset opacity
+        function clearTitleHighlights() {
+            document.querySelectorAll('.title-word').forEach(word => {
+                word.classList.remove('highlight', 'dimmed');
+            });
+        }
+
+        // Function to highlight specific words and dim others
+        function highlightTitleWords(wordsToHighlight) {
+            const allTitleWords = document.querySelectorAll('.title-word');
+            
+            // First, remove all existing classes
+            allTitleWords.forEach(word => {
+                word.classList.remove('highlight', 'dimmed');
+            });
+            
+            // If no words to highlight, return to normal state
+            if (wordsToHighlight.length === 0) {
+                return;
+            }
+            
+            // Apply highlight and dimmed classes
+            allTitleWords.forEach(word => {
+                const wordData = word.dataset.word;
+                if (wordsToHighlight.includes(wordData)) {
+                    word.classList.add('highlight');
+                } else {
+                    word.classList.add('dimmed');
+                }
+            });
+        }
+
+        // Improved toggle functionality with title highlighting
+        document.querySelectorAll('.skill-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                e.preventDefault();
+                const skillItem = this.parentElement;
+                const isExpanded = skillItem.classList.contains('expanded');
+                const highlightWords = skillItem.dataset.highlight ? skillItem.dataset.highlight.split(',') : [];
+                
+                // Close all other expanded items with proper collapsing animation
+                document.querySelectorAll('.skill-item').forEach(item => {
+                    if (item !== skillItem && item.classList.contains('expanded')) {
+                        item.classList.add('collapsing');
+                        item.classList.remove('expanded');
+                        
+                        // Remove collapsing class after animation
+                        setTimeout(() => {
+                            item.classList.remove('collapsing');
+                        }, 600);
+                    }
+                });
+                
+                // Toggle current item
+                if (isExpanded) {
+                    skillItem.classList.add('collapsing');
+                    skillItem.classList.remove('expanded');
+                    
+                    // Clear title highlights when collapsing (return to normal state)
+                    clearTitleHighlights();
+                    
+                    setTimeout(() => {
+                        skillItem.classList.remove('collapsing');
+                    }, 600);
+                } else {
+                    skillItem.classList.add('expanding');
+                    skillItem.classList.add('expanded');
+                    
+                    // Highlight relevant words in the title and dim others
+                    highlightTitleWords(highlightWords);
+                    
+                    setTimeout(() => {
+                        skillItem.classList.remove('expanding');
+                    }, 600);
+                }
+            });
+        });
+
+        // Improved about section toggle
+        document.querySelector('.about-header').addEventListener('click', function() {
+            const aboutSection = this.parentElement;
+            const isExpanded = aboutSection.classList.contains('expanded');
+            
+            if (isExpanded) {
+                aboutSection.classList.add('collapsing');
+                aboutSection.classList.remove('expanded');
+                
+                setTimeout(() => {
+                    aboutSection.classList.remove('collapsing');
+                }, 600);
+            } else {
+                aboutSection.classList.add('expanded');
+            }
+        });
+    </script>
+</body>
+</html>
