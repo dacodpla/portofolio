@@ -16,6 +16,11 @@
             box-sizing: border-box;
         }
 
+        ::selection {
+        color: rgb(255, 255, 255);
+        background: rgb(0, 0, 0);
+}
+
         body {
             font-family: "Frank Ruhl Libre", serif;
             line-height: 1.6;
@@ -177,7 +182,7 @@
             max-height: 0;
             opacity: 0;
             transform: translateY(-20px);
-            background-color: #000;
+            background: linear-gradient(45deg, #be3939, #c684c6);
             width: 100vw;
             position: relative;
             left: 50%;
@@ -224,7 +229,7 @@
         .skill-description {
             font-family: "Fustat", sans-serif;
             font-size: 18px;
-            color: #666;
+            color: #fff;
             line-height: 1.8;
             margin-bottom: 2rem;
             max-width: 80%;
@@ -255,7 +260,7 @@
             font-family: "Frank Ruhl Libre", serif;
             font-size: 28px;
             font-weight: 700;
-            color: #000;
+            color: #fff;
             margin-bottom: 0.5rem;
             transition: color 0.3s ease;
         }
@@ -267,29 +272,29 @@
         .project-description {
             font-family: "Fustat", sans-serif;
             font-size: 16px;
-            color: #666;
+            color: #fff;
+            opacity: 69%;
             line-height: 1.6;
             margin-bottom: 0.5rem;
             transition: color 0.3s ease;
         }
 
         .skill-item.expanded .project-description {
-            color: #ccc;
+            color: #fff;
+            opacity: 69%;
         }
 
         .project-tech {
             font-family: "Fustat", sans-serif;
             font-size: 12px;
             font-weight: 600;
-            background: linear-gradient(180deg, #be3939, #c684c6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .skill-item.expanded .project-tech {
-            color: #be3939;
+            color: #fff;
         }
 
         /* About Section - Same improvements */
@@ -618,7 +623,7 @@
                             <li class="project-item">
                                 <h3 class="project-title">Instagram Feeds</h3>
                                 <p class="project-description">Digital short-form content made for Instagram using it's collage feature.</p>
-                                <div class="project-tech">Photoshop, Photoshop</div>
+                                <div class="project-tech">Photoshop, Illustrator</div>
                             </li>
                         </ul>
                     </div>
