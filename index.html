@@ -343,7 +343,11 @@
             max-height: 0;
             opacity: 0;
             transform: translateY(-20px);
-            background-color: #000;
+            background-image: url("about.png"); /* Replace with your image path */
+            background-size: cover; /* Makes image cover the entire section */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents tiling */
+            background-color: #000; /* Optional fallback */
             width: 100vw;
             position: relative;
             left: 50%;
@@ -351,6 +355,7 @@
             margin-left: -50vw;
             margin-right: -50vw;
         }
+
 
         .about-content-inner {
             padding: 2rem;
@@ -381,7 +386,7 @@
             line-height: 1.8;
             margin-bottom: 2rem;
             max-width: 80%;
-            color: #333;
+            color: #fff;
             transition: color 0.3s ease;
         }
 
@@ -400,15 +405,17 @@
         }
 
         .skills-list-text {
+           font-family: "Fustat", sans-serif;
             font-size: 16px;
+            font-weight: 600;
             line-height: 1.8;
-            color: #666;
+            color: #fff;
             margin-left: 2rem;
             transition: color 0.3s ease;
         }
 
         .about-section.expanded .skills-list-text {
-            color: #ccc;
+            color: #fff;
         }
 
         /* Contact Section */
@@ -557,7 +564,7 @@
                 <div class="skill-content">
                     <div class="skill-content-inner">
                         <div class="skill-description">
-                            Perhaps one of my most fleshed-out skillsets, I design websites not only for the looks, but also the usability and unique-ness or even <i>bespokeability</i>.
+                            Perhaps one of my most fleshed-out skillsets, I design websites not only for the looks, but also the usability and unique-ness.
                         </div>
                         <ul class="projects-list">
                             <li class="project-item">
