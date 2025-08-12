@@ -309,6 +309,32 @@
         transition: color 0.3s ease;
       }
 
+      .project-title a {
+        color: inherit;
+        text-decoration: none;
+        position: relative;
+        display: inline-block;
+      }
+
+      .project-title a::after {
+        content: "";
+        position: absolute;
+        height: 5px;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        background: #fff; /* matches .skill-link underline color */
+        transition: width 1s ease;
+      }
+
+      .skill-item.expanded .project-title a::after {
+        background: #fff;
+      }
+
+      .project-title a:hover::after {
+        width: 100%;
+      }
+
       .skill-item.expanded .project-title {
         color: #fff;
       }
@@ -647,7 +673,11 @@
               </div>
               <ul class="projects-list">
                 <li class="project-item">
-                  <h3 class="project-title">Personal Portfolio Website</h3>
+                  <h3 class="project-title">
+                    <a href="https://dacodpla.github.io/portofolio/"
+                      >Personal Portfolio Website</a
+                    >
+                  </h3>
                   <p class="project-description">
                     A clean, minimalist portfolio showcasing my work with smooth
                     animations and responsive design.
@@ -655,7 +685,11 @@
                   <div class="project-tech">HTML, CSS, JAVASCRIPT, Figma</div>
                 </li>
                 <li class="project-item">
-                  <h3 class="project-title">Small Business Landing Page</h3>
+                  <h3 class="project-title">
+                    <a href="https://sukasukachicken.vercel.app/"
+                      >Small Business Landing Page</a
+                    >
+                  </h3>
                   <p class="project-description">
                     A website for a small business that sells fired chicken.
                   </p>
@@ -681,7 +715,12 @@
               </div>
               <ul class="projects-list">
                 <li class="project-item">
-                  <h3 class="project-title">3D Visual Novel</h3>
+                  <h3 class="project-title">
+                    <a
+                      href="https://www.roblox.com/games/73632101430970/R-Ndezvous-test-branch"
+                      >3D Visual Novel</a
+                    >
+                  </h3>
                   <p class="project-description">
                     A 3D visual novel engine made on the Roblox engine, with
                     modular dialogues.
@@ -689,7 +728,7 @@
                   <div class="project-tech">Roblox Studio, Lua</div>
                 </li>
                 <!-- <li class="project-item">
-                                <h3 class="project-title">Puzzle Strategy Game</h3>
+                                <h3 class="project-title"><a href="#">Puzzle Strategy Game</a></h3>
                                 <p class="project-description">Innovative puzzle game combining strategy elements with mind-bending mechanics. Designed for both casual and hardcore puzzle game enthusiasts.</p>
                                 <div class="project-tech">GameMaker Studio, GML</div>
                             </li> -->
@@ -757,12 +796,12 @@
               </div>
               <ul class="projects-list">
                 <!-- <li class="project-item">
-                                <h3 class="project-title">Product Promotional Videos</h3>
+                                <h3 class="project-title"><a href="#">Product Promotional Videos</a></h3>
                                 <p class="project-description">Dynamic promotional content featuring motion graphics, color correction, and professional audio mixing. Created for both digital marketing and broadcast use.</p>
                                 <div class="project-tech">Final Cut Pro, After Effects</div>
                             </li>
                             <li class="project-item">
-                                <h3 class="project-title">Documentary Short Films</h3>
+                                <h3 class="project-title"><a href="#">Documentary Short Films</a></h3>
                                 <p class="project-description">Compelling narrative storytelling through video editing, incorporating interviews, b-roll footage, and sound design to create engaging documentary content.</p>
                                 <div class="project-tech">Premiere Pro, Audition</div>
                             </li> -->
