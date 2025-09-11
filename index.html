@@ -27,7 +27,7 @@
       body {
         font-family: "Frank Ruhl Libre", serif;
         line-height: 1.6;
-        background-color: #FFF8E7;
+        background-color: #fff8e7;
         color: #16161d;
       }
 
@@ -64,6 +64,7 @@
         animation: fadeInUp 1s ease 0.4s forwards;
       }
 
+      /* Replace the existing .title.fixed styles with this: */
       .title.fixed {
         position: fixed;
         top: 0;
@@ -76,7 +77,7 @@
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         font-size: 36px; /* Smaller when fixed */
         margin-bottom: 0;
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition: transform 0.3s ease, opacity 0.3s ease; /* Increased duration */
         text-align: center;
         transform: translateY(-100%);
         opacity: 0;
@@ -110,7 +111,7 @@
         left: 0;
         bottom: -5px;
         width: 0;
-        background: linear-gradient(90deg, #be3939, #c684c6);
+        background-color: #16161d;
         transition: width 0.5s ease;
       }
 
@@ -273,7 +274,7 @@
       .skill-description {
         font-family: "Fustat", sans-serif;
         font-size: 18px;
-        color: #FFF8E7;
+        color: #fff8e7;
         line-height: 1.8;
         margin-bottom: 2rem;
         max-width: 80%;
@@ -281,7 +282,7 @@
       }
 
       .skill-item.expanded .skill-description {
-        color: #FFF8E7;
+        color: #fff8e7;
       }
 
       .projects-list {
@@ -304,7 +305,7 @@
         font-family: "Frank Ruhl Libre", serif;
         font-size: 28px;
         font-weight: 700;
-        color: #FFF8E7;
+        color: #fff8e7;
         margin-bottom: 0.5rem;
         transition: color 0.3s ease;
       }
@@ -323,12 +324,12 @@
         left: 0;
         bottom: 0;
         width: 0;
-        background: #FFF8E7; /* matches .skill-link underline color */
+        background: #fff8e7; /* matches .skill-link underline color */
         transition: width 1s ease;
       }
 
       .skill-item.expanded .project-title a::after {
-        background: #FFF8E7;
+        background: #fff8e7;
       }
 
       .project-title a:hover::after {
@@ -336,13 +337,13 @@
       }
 
       .skill-item.expanded .project-title {
-        color: #FFF8E7;
+        color: #fff8e7;
       }
 
       .project-description {
         font-family: "Fustat", sans-serif;
         font-size: 16px;
-        color: #FFF8E7;
+        color: #fff8e7;
         opacity: 69%;
         line-height: 1.6;
         margin-bottom: 0.5rem;
@@ -350,7 +351,7 @@
       }
 
       .skill-item.expanded .project-description {
-        color: #FFF8E7;
+        color: #fff8e7;
         opacity: 69%;
       }
 
@@ -358,13 +359,13 @@
         font-family: "Fustat", sans-serif;
         font-size: 12px;
         font-weight: 600;
-        color: #FFF8E7;
+        color: #fff8e7;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
 
       .skill-item.expanded .project-tech {
-        color: #FFF8E7;
+        color: #fff8e7;
       }
 
       /* About Section - Same improvements */
@@ -455,12 +456,12 @@
         line-height: 1.8;
         margin-bottom: 2rem;
         max-width: 80%;
-        color: #FFF8E7;
+        color: #fff8e7;
         transition: color 0.3s ease;
       }
 
       .about-section.expanded .about-text {
-        color: #FFF8E7;
+        color: #fff8e7;
       }
 
       .skills-text {
@@ -478,13 +479,13 @@
         font-size: 16px;
         font-weight: 600;
         line-height: 1.8;
-        color: #FFF8E7;
+        color: #fff8e7;
         margin-left: 2rem;
         transition: color 0.3s ease;
       }
 
       .about-section.expanded .skills-list-text {
-        color: #FFF8E7;
+        color: #fff8e7;
       }
 
       /* Contact Section */
@@ -691,7 +692,7 @@
                     >
                   </h3>
                   <p class="project-description">
-                    A website for a small business that sells fired chicken.
+                    A website for a small business that sells fried chicken.
                   </p>
                   <div class="project-tech">HTML, JS, CSS, EMAILJS, Figma</div>
                 </li>
@@ -770,7 +771,7 @@
                 <li class="project-item">
                   <h3 class="project-title">Instagram Feeds</h3>
                   <p class="project-description">
-                    Digital short-form content made for Instagram using it's
+                    Digital short-form content made for Instagram using its
                     collage feature.
                   </p>
                   <div class="project-tech">Photoshop, Illustrator</div>
@@ -791,7 +792,7 @@
           <div class="skill-content">
             <div class="skill-content-inner">
               <div class="skill-description">
-                Since it's inception, moving pictures have been a groundbreaking
+                Since its inception, moving pictures have been a groundbreaking
                 way to convey emotions, feelings, or even knowledge.
               </div>
               <ul class="projects-list">
@@ -876,32 +877,57 @@
 
       // Fixed title scroll functionality
       let isFixed = false;
+      let isAnimating = false;
       const titleOriginalTop = titleElement.offsetTop;
+      const aboutSection = document.querySelector(".about-section");
+
+      function showFixedTitle() {
+        if (isAnimating || isFixed) return;
+        isAnimating = true;
+
+        titleElement.classList.add("fixed");
+        titlePlaceholder.classList.add("active");
+
+        requestAnimationFrame(() => {
+          titleElement.classList.add("show");
+          isFixed = true;
+          setTimeout(() => {
+            isAnimating = false;
+          }, 200);
+        });
+      }
+
+      function hideFixedTitle() {
+        if (isAnimating || !isFixed) return;
+        isAnimating = true;
+
+        titleElement.classList.remove("show");
+
+        setTimeout(() => {
+          titleElement.classList.remove("fixed");
+          titlePlaceholder.classList.remove("active");
+          isFixed = false;
+          isAnimating = false;
+        }, 200);
+      }
 
       window.addEventListener("scroll", function () {
         const scrollTop =
           window.pageYOffset || document.documentElement.scrollTop;
+        const aboutSectionTop = aboutSection.offsetTop;
 
-        // Check if we've scrolled past the original title position
-        if (scrollTop > titleOriginalTop + 50 && !isFixed) {
-          // Added 50px buffer
-          titleElement.classList.add("fixed");
-          titlePlaceholder.classList.add("active");
-          // Small delay to ensure fixed positioning is applied before showing
-          requestAnimationFrame(() => {
-            titleElement.classList.add("show");
-          });
-          isFixed = true;
-        } else if (scrollTop <= titleOriginalTop && isFixed) {
-          titleElement.classList.remove("show");
-          // Wait for slide-up animation to complete before removing fixed
-          setTimeout(() => {
-            titleElement.classList.remove("fixed");
-            titlePlaceholder.classList.remove("active");
-          }, 200);
-          isFixed = false;
+        // Define the zones
+        const shouldBeFixed =
+          scrollTop > titleOriginalTop + 50 &&
+          scrollTop < aboutSectionTop - 150;
+
+        if (shouldBeFixed && !isFixed) {
+          showFixedTitle();
+        } else if (!shouldBeFixed && isFixed) {
+          hideFixedTitle();
         }
       });
+
       // Function to clear all title highlights and reset opacity
       function clearTitleHighlights() {
         document.querySelectorAll(".title-word").forEach((word) => {
