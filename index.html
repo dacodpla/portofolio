@@ -64,7 +64,6 @@
         animation: fadeInUp 1s ease 0.4s forwards;
       }
 
-      /* Replace the existing .title.fixed styles with this: */
       .title.fixed {
         position: fixed;
         top: 0;
@@ -75,17 +74,25 @@
         backdrop-filter: blur(10px);
         padding: 1rem 2rem;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        font-size: 36px; /* Smaller when fixed */
+        font-size: 36px;
         margin-bottom: 0;
-        transition: transform 0.3s ease, opacity 0.3s ease; /* Increased duration */
         text-align: center;
         transform: translateY(-100%);
         opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .title.fixed.show {
         transform: translateY(0);
         opacity: 1;
+      }
+
+      .title.fixed.hide {
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.6, 1),
+          opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1);
       }
 
       /* Placeholder to maintain layout when title becomes fixed */
@@ -875,58 +882,58 @@
         titleElement.nextSibling
       );
 
-      // Fixed title scroll functionality
-      let isFixed = false;
-      let isAnimating = false;
+      // Fixed title scroll functionality - completely reworked
+      let titleState = "normal"; // 'normal', 'fixed', 'hidden'
       const titleOriginalTop = titleElement.offsetTop;
       const aboutSection = document.querySelector(".about-section");
 
-      function showFixedTitle() {
-        if (isAnimating || isFixed) return;
-        isAnimating = true;
-
-        titleElement.classList.add("fixed");
-        titlePlaceholder.classList.add("active");
-
-        requestAnimationFrame(() => {
-          titleElement.classList.add("show");
-          isFixed = true;
-          setTimeout(() => {
-            isAnimating = false;
-          }, 200);
-        });
-      }
-
-      function hideFixedTitle() {
-        if (isAnimating || !isFixed) return;
-        isAnimating = true;
-
-        titleElement.classList.remove("show");
-
-        setTimeout(() => {
-          titleElement.classList.remove("fixed");
-          titlePlaceholder.classList.remove("active");
-          isFixed = false;
-          isAnimating = false;
-        }, 200);
-      }
-
-      window.addEventListener("scroll", function () {
+      function updateTitleState() {
         const scrollTop =
           window.pageYOffset || document.documentElement.scrollTop;
         const aboutSectionTop = aboutSection.offsetTop;
 
-        // Define the zones
-        const shouldBeFixed =
-          scrollTop > titleOriginalTop + 50 &&
-          scrollTop < aboutSectionTop - 150;
-
-        if (shouldBeFixed && !isFixed) {
-          showFixedTitle();
-        } else if (!shouldBeFixed && isFixed) {
-          hideFixedTitle();
+        let newState;
+        if (scrollTop <= titleOriginalTop + 30) {
+          newState = "normal";
+        } else if (scrollTop < aboutSectionTop - 120) {
+          newState = "fixed";
+        } else {
+          newState = "hidden";
         }
-      });
+
+        if (newState !== titleState) {
+          titleState = newState;
+
+          titleElement.classList.remove("fixed", "show", "hide");
+          titlePlaceholder.classList.remove("active");
+
+          if (newState === "fixed") {
+            titleElement.classList.add("fixed");
+            titlePlaceholder.classList.add("active");
+            // Use requestAnimationFrame for smooth animation
+            requestAnimationFrame(() => {
+              titleElement.classList.add("show");
+            });
+          } else if (newState === "hidden") {
+            titleElement.classList.add("fixed", "hide");
+            titlePlaceholder.classList.add("active");
+          }
+        }
+      }
+
+      // Smooth scroll handler using requestAnimationFrame
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateTitleState();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", onScroll);
 
       // Function to clear all title highlights and reset opacity
       function clearTitleHighlights() {
