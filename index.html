@@ -18,7 +18,7 @@
         padding: 0;
         box-sizing: border-box;
         scrollbar-width: thin;
-        scrollbar-color: #16161d3a #fff8e7;
+        scrollbar-color: #16161d #fff8e7;
       }
 
       ::selection {
@@ -1034,6 +1034,20 @@
           } else {
             aboutSection.classList.add("expanded");
           }
+        });
+
+      // Copy logo as text functionality
+      document
+        .querySelectorAll(".logo img, .contact-logo img")
+        .forEach((img) => {
+          img.addEventListener("copy", function (e) {
+            e.preventDefault();
+            e.clipboardData.setData("text/plain", "\\\\\\\\/, Nobody Expects the Spanish Inquisition!!!");
+          });
+
+          // Make images user-selectable
+          img.style.userSelect = "text";
+          img.style.webkitUserSelect = "text";
         });
     </script>
   </body>
