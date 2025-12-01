@@ -1049,6 +1049,33 @@
           img.style.userSelect = "text";
           img.style.webkitUserSelect = "text";
         });
+
+        // Tab title easter egg
+      const originalTitle = document.title;
+      const awayMessages = [
+        "I miss you 😢",
+        "Come back! 🥺",
+        "Where did you go? 😔",
+        "Don't leave me... 💔",
+        "Hello? Anyone there? 👋",
+        "Psst... I'm still here! 👀",
+        "This tab feels lonely... 😞",
+        "I'll be waiting... ⏳",
+      ];
+
+      let titleInterval;
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          // User switched tabs - show random message
+          const randomMessage =
+            awayMessages[Math.floor(Math.random() * awayMessages.length)];
+          document.title = randomMessage;
+        } else {
+          // User came back - restore original title
+          document.title = originalTitle;
+        }
+      });
     </script>
   </body>
 </html>
